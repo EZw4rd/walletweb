@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0F1117">
+<title>WalletVN</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<meta name="apple-mobile-web-app-title" content="WalletVN">
+<!-- Load Be Vietnam Pro async so it never blocks rendering -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+      rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"></noscript>
+<style>
+:root {
+  --bg: #0a0d14;
+  --surface: #111521;
+  --surface2: #181e2e;
+  --border: rgba(255,255,255,0.08);
+  --accent: #4ade80;
+  --accent2: #f97316;
+  --danger: #f43f5e;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --card: #13192b;
+  --sidebar-w: 240px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;}
+body{font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
+
+/* ── Top mobile nav bar ── */
+.mobile-topbar{
+  display:none;align-items:center;justify-content:space-between;
+  padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:50;flex-shrink:0;
+}
+.mobile-logo{font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:17px;color:#fff;display:flex;align-items:center;gap:8px;}
+.mobile-logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.hamburger{background:none;border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:18px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* ── Layout ── */
+.layout{display:flex;flex:1;min-height:0;}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  padding:28px 0;position:relative;z-index:30;overflow-y:auto;flex-shrink:0;
+  transition:transform 0.3s ease;
+}
+.sidebar-header{padding:0 24px 28px;display:flex;align-items:center;gap:10px;}
+.logo-icon{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.logo-text{font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:800;font-size:18px;color:#fff;}
+.nav-group{padding:0 12px;margin-bottom:8px;}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);padding:0 12px 8px;display:block;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:14px;color:var(--muted);transition:all .2s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left;}
+.nav-item:hover{background:var(--surface2);color:var(--text);}
+.nav-item.active{background:rgba(74,222,128,.12);color:var(--accent);}
+.nav-item .icon{font-size:18px;width:22px;text-align:center;}
+.sidebar-footer{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.user-chip{display:flex;align-items:center;gap:10px;}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#4ade80,#22d3ee);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#000;flex-shrink:0;}
+.user-name{font-weight:600;color:var(--text);font-size:13px;}
+.user-plan{font-size:11px;color:var(--muted);}
+
+/* ── Main area ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.topbar{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;gap:12px;flex-wrap:wrap;}
+.page-title{font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:20px;font-weight:700;}
+.topbar-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.btn{padding:9px 18px;border-radius:10px;border:none;cursor:pointer;font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;font-weight:500;transition:all .2s;white-space:nowrap;}
+.btn-primary{background:var(--accent);color:#000;font-weight:700;}
+.btn-primary:hover{background:#22c55e;transform:translateY(-1px);box-shadow:0 8px 20px rgba(74,222,128,.3);}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border);}
+.btn-outline:hover{background:var(--surface2);}
+.btn-excel{background:rgba(34,197,94,.12);color:var(--accent);border:1px solid rgba(74,222,128,.3);display:flex;align-items:center;gap:6px;}
+.btn-excel:hover{background:rgba(74,222,128,.2);}
+
+/* ── Scrollable content ── */
+.content{flex:1;overflow-y:auto;padding:24px 28px;}
+
+/* ── Pages ── */
+.page{display:none;}
+.page.active{display:block;animation:fadeIn .22s;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ── Stats grid ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;position:relative;overflow:hidden;transition:transform .2s;}
+.stat-card:hover{transform:translateY(-2px);}
+.stat-card::before{content:'';position:absolute;top:-30px;right:-30px;width:80px;height:80px;border-radius:50%;opacity:.12;}
+.stat-card.green::before{background:#4ade80;}
+.stat-card.red::before{background:#f43f5e;}
+.stat-card.blue::before{background:#38bdf8;}
+.stat-label{font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+.stat-value{font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:22px;font-weight:800;margin-bottom:5px;}
+.stat-value.green{color:var(--accent);}
+.stat-value.red{color:var(--danger);}
+.stat-value.blue{color:#38bdf8;}
+.stat-change{font-size:12px;color:var(--muted);}
+.stat-change .up{color:var(--accent);}
+.stat-change .down{color:var(--danger);}
+
+/* ── Two-col grid ── */
+.main-grid{display:grid;grid-template-columns:1fr 320px;gap:16px;margin-bottom:20px;}
+
+/* ── Cards ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;}
+.card-head{display:flex;justify-content:space-between;align-items:center;padding:20px 20px 0;margin-bottom:16px;}
+.card-body{padding:0 20px 20px;}
+.card-title{font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;font-weight:700;}
+
+/* ── Period tabs ── */
+.period-tabs{display:flex;gap:3px;background:var(--surface2);border-radius:8px;padding:3px;}
+.period-tab{padding:4px 11px;border-radius:5px;font-size:12px;cursor:pointer;color:var(--muted);transition:all .2s;border:none;background:none;font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+.period-tab.active{background:var(--accent);color:#000;font-weight:700;}
+
+/* ── Budget bars ── */
+.budget-item{margin-bottom:16px;}
+.budget-meta{display:flex;justify-content:space-between;margin-bottom:5px;font-size:13px;}
+.budget-amounts{color:var(--muted);}
+.budget-bar{height:6px;background:var(--surface2);border-radius:99px;overflow:hidden;}
+.budget-fill{height:100%;border-radius:99px;transition:width 1s ease;}
+
+/* ── Transactions ── */
+.tx-list{list-style:none;}
+.tx-item{display:flex;align-items:center;gap:12px;padding:13px 20px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
+.tx-item:last-child{border-bottom:none;}
+.tx-item:hover{background:rgba(255,255,255,.02);}
+.tx-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.tx-info{flex:1;min-width:0;}
+.tx-name{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-cat{font-size:12px;color:var(--muted);}
+.tx-right{text-align:right;flex-shrink:0;}
+.tx-amount{font-size:14px;font-weight:700;font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+.tx-amount.inc{color:var(--accent);}
+.tx-amount.exp{color:var(--danger);}
+.tx-date{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* ── Savings ── */
+.savings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.goal-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;}
+.goal-emoji{font-size:26px;margin-bottom:10px;}
+.goal-name{font-size:14px;font-weight:600;margin-bottom:3px;}
+.goal-target{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.goal-bar{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-bottom:7px;}
+.goal-fill{height:100%;background:linear-gradient(90deg,var(--accent),#22d3ee);border-radius:99px;}
+.goal-pct{font-size:12px;color:var(--accent);font-weight:600;}
+
+/* ── Form ── */
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-field label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:5px;}
+.form-field input,.form-field select,.form-field textarea{
+  width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;
+  padding:9px 13px;color:var(--text);font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;outline:none;transition:border-color .2s;
+}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--accent);}
+select option{background:#1a2035;}
+.form-field textarea{resize:none;height:120px;line-height:1.6;}
+
+/* ── Search/filter bar ── */
+.filter-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.filter-bar input,.filter-bar select{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 13px;color:var(--text);font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+.filter-bar input{flex:1;min-width:160px;}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--accent);}
+
+/* ── Notification panel ── */
+.notif-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:98;display:none;backdrop-filter:blur(3px);}
+.notif-overlay.open{display:block;}
+.notif-panel{
+  position:fixed;right:-420px;top:0;width:min(420px,100vw);height:100dvh;
+  background:var(--surface);border-left:1px solid var(--border);z-index:99;
+  transition:right .3s cubic-bezier(.4,0,.2,1);overflow-y:auto;padding:24px;
+}
+.notif-panel.open{right:0;}
+.notif-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.notif-title{font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:18px;font-weight:700;}
+.close-btn{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;}
+.parse-btn{width:100%;margin-top:6px;padding:12px;background:var(--accent);color:#000;font-weight:700;border-radius:10px;border:none;cursor:pointer;font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;transition:all .2s;}
+.parse-btn:hover{background:#22c55e;}
+.parsed-result{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:14px;display:none;}
+.parsed-result.show{display:block;animation:fadeIn .25s;}
+.parsed-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:4px;}
+.parsed-input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 11px;color:var(--text);font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;outline:none;transition:border-color .2s;margin-bottom:10px;}
+.parsed-input:focus{border-color:var(--accent);}
+.save-btn{width:100%;padding:11px;background:#1e3a2f;color:var(--accent);border:1px solid var(--accent);border-radius:10px;font-weight:700;font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;cursor:pointer;transition:all .2s;margin-top:4px;}
+.save-btn:hover{background:rgba(74,222,128,.18);}
+.sample-pill{background:var(--surface2);border:1px solid transparent;border-radius:8px;padding:9px 12px;font-size:12px;color:var(--muted);cursor:pointer;transition:all .2s;margin-bottom:7px;display:block;width:100%;text-align:left;}
+.sample-pill:hover{border-color:var(--accent);color:var(--text);}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--accent);color:#000;padding:13px 20px;border-radius:12px;font-weight:700;font-size:14px;transform:translateY(80px);opacity:0;transition:all .3s;z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* ── Badge ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;}
+.badge-green{background:rgba(74,222,128,.12);color:var(--accent);}
+.badge-red{background:rgba(244,63,94,.12);color:var(--danger);}
+.badge-blue{background:rgba(56,189,248,.12);color:#38bdf8;}
+
+/* ── Bottom mobile nav ── */
+.mobile-nav{
+  display:none;background:var(--surface);border-top:1px solid var(--border);
+  padding:8px 0 max(8px,env(safe-area-inset-bottom));flex-shrink:0;
+}
+.mobile-nav-items{display:flex;justify-content:space-around;}
+.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 12px;border-radius:10px;cursor:pointer;color:var(--muted);font-size:10px;transition:color .2s;border:none;background:none;font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+.mobile-nav-item .mn-icon{font-size:20px;}
+.mobile-nav-item.active{color:var(--accent);}
+
+/* ── Image upload / OCR ── */
+#dropZone:hover{border-color:var(--accent)!important;}
+.ocr-loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;font-size:13px;color:var(--muted);}
+.ocr-loading::before{content:'';width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.img-preview-wrap{position:relative;}
+.img-clear{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);border:none;border-radius:50%;width:24px;height:24px;color:#fff;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;line-height:1;}
+
+/* ── Edit Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;width:100%;max-width:480px;max-height:90dvh;overflow-y:auto;animation:modalIn .22s cubic-bezier(.34,1.56,.64,1);}
+@keyframes modalIn{from{opacity:0;transform:scale(.93) translateY(12px)}to{opacity:1;transform:none}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:20px 20px 0;}
+.modal-title{font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:700;font-size:17px;}
+.modal-body{padding:20px;}
+.modal-foot{padding:0 20px 20px;display:flex;gap:10px;}
+
+/* ── Tx row with action buttons ── */
+.tx-item{position:relative;overflow:hidden;}
+.tx-actions{display:flex;gap:6px;align-items:center;flex-shrink:0;opacity:0;transition:opacity .2s;}
+.tx-item:hover .tx-actions{opacity:1;}
+.tx-btn{border:none;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px;font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:600;transition:all .15s;}
+.tx-btn-edit{background:rgba(56,189,248,.12);color:#38bdf8;}
+.tx-btn-edit:hover{background:rgba(56,189,248,.25);}
+.tx-btn-del{background:rgba(244,63,94,.12);color:#f43f5e;}
+.tx-btn-del:hover{background:rgba(244,63,94,.25);}
+
+/* on mobile — always show small icons */
+@media(max-width:768px){
+  .tx-actions{opacity:1;}
+  .tx-btn{padding:4px 8px;font-size:11px;}
+}
+
+/* ── Scrollbars ── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
+
+/* ══════ RESPONSIVE ══════ */
+@media(max-width:1100px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .main-grid{grid-template-columns:1fr;}
+}
+@media(max-width:768px){
+  html,body{overflow:hidden;}
+  .mobile-topbar{display:flex;}
+  .mobile-nav{display:block;}
+  .sidebar{
+    position:fixed;top:0;left:0;height:100dvh;transform:translateX(-100%);
+    padding-top:16px;z-index:40;
+  }
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-header{justify-content:space-between;}
+  .sb-close{display:flex;}
+  .main{overflow:hidden;}
+  .content{padding:16px;}
+  .topbar{display:none;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .stat-card{padding:14px;}
+  .stat-value{font-size:17px;}
+  .main-grid{grid-template-columns:1fr;}
+  .savings-grid{grid-template-columns:repeat(2,1fr);}
+  .form-row{grid-template-columns:1fr;}
+  .notif-panel{width:100vw;border-left:none;}
+  .toast{left:16px;right:16px;bottom:76px;text-align:center;}
+}
+@media(max-width:400px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .savings-grid{grid-template-columns:1fr;}
+}
+
+/* ── Android WebView touch fixes ── */
+* { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+button, .nav-item, .mobile-nav-item, .tx-item, .stat-card, .budget-card {
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(74,222,128,0.15);
+  touch-action: manipulation;
+}
+button:active, .nav-item:active, .mobile-nav-item:active { opacity: 0.75; }
+input, textarea, select { font-size: 16px !important; } /* prevent iOS/Android zoom on focus */
+.layout { height: 100vh; height: 100dvh; } /* dual height for Android compat */
+.page { -webkit-overflow-scrolling: touch; }
+</style>
+</head>
+<body>
+
+<!-- Mobile top bar -->
+<div class="mobile-topbar">
+  <div class="mobile-logo"><div class="mobile-logo-icon">💰</div>WalletVN</div>
+  <button class="hamburger" onclick="toggleSidebar()">☰</button>
+</div>
+
+<!-- Layout -->
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="logo-icon">💰</div>
+        <span class="logo-text">WalletVN</span>
+      </div>
+      <button class="hamburger sb-close" style="display:none;" onclick="toggleSidebar()">✕</button>
+    </div>
+    <div class="nav-group">
+      <span class="nav-label">Main</span>
+      <button class="nav-item active" onclick="nav('dashboard',this)"><span class="icon">📊</span>Dashboard</button>
+      <button class="nav-item" onclick="nav('transactions',this)"><span class="icon">💳</span>Transactions</button>
+      <button class="nav-item" onclick="nav('budgets',this)"><span class="icon">🎯</span>Budgets</button>
+      <button class="nav-item" onclick="nav('savings',this)"><span class="icon">🏦</span>Savings Goals</button>
+    </div>
+    <div class="nav-group">
+      <span class="nav-label">Tools</span>
+      <button class="nav-item" onclick="openNotif();toggleSidebar(false)"><span class="icon">🔔</span>Bank Notification</button>
+      <button class="nav-item" onclick="nav('add',this)"><span class="icon">➕</span>Add Transaction</button>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="avatar">E</div>
+        <div>
+          <div class="user-name">Ezward</div>
+          <div class="user-plan">✨ Pro Plan</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div class="page-title" id="pageTitle">Dashboard</div>
+      <div class="topbar-actions">
+        <button class="btn btn-excel" onclick="exportExcel()">📥 Export to Excel</button>
+        <button class="btn btn-outline" onclick="openNotif()">🔔 Parse Bank SMS</button>
+        <button class="btn btn-primary" onclick="nav('add',null)">+ Add Transaction</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card green">
+            <div class="stat-label">Total Balance</div>
+            <div class="stat-value green" id="totalBalance">₫0</div>
+            <div class="stat-change"><span class="up">↑ 8.2%</span> this month</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-label">Monthly Income</div>
+            <div class="stat-value green" id="monthlyIncome">₫0</div>
+            <div class="stat-change">vs last month <span class="up">+0%</span></div>
+          </div>
+          <div class="stat-card red">
+            <div class="stat-label">Monthly Expenses</div>
+            <div class="stat-value red" id="monthlyExpense">₫0</div>
+            <div class="stat-change"><span class="down">↑ 12%</span> spending</div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-label">Net Savings</div>
+            <div class="stat-value blue" id="netSavings">₫0</div>
+            <div class="stat-change">savings rate <span class="up" id="savingsRate">0%</span></div>
+          </div>
+        </div>
+
+        <div class="main-grid">
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Cash Flow Overview</div>
+              <div class="period-tabs">
+                <button class="period-tab active" onclick="switchPeriod(this,'week')">Week</button>
+                <button class="period-tab" onclick="switchPeriod(this,'month')">Month</button>
+                <button class="period-tab" onclick="switchPeriod(this,'year')">Year</button>
+              </div>
+            </div>
+            <div class="card-body"><canvas id="cashFlowChart"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Budget Status</div><span class="badge badge-green">Feb 2026</span></div>
+            <div class="card-body" id="budgetList"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Recent Transactions</div>
+            <button class="btn btn-outline" style="font-size:12px;padding:5px 13px" onclick="nav('transactions',null)">View All</button>
+          </div>
+          <ul class="tx-list" id="recentTxList"></ul>
+        </div>
+      </div>
+
+      <!-- TRANSACTIONS -->
+      <div class="page" id="page-transactions">
+        <div class="filter-bar">
+          <input type="text" id="txSearch" placeholder="🔍 Search transactions…" oninput="renderAllTx()">
+          <select id="txFilter" onchange="renderAllTx()" style="min-width:120px;">
+            <option value="all">All Types</option>
+            <option value="income">💰 Income</option>
+            <option value="expense">💸 Expense</option>
+          </select>
+          <button class="btn btn-excel" onclick="exportExcel()">📥 Export Excel</button>
+        </div>
+        <div class="card"><ul class="tx-list" id="allTxList"></ul></div>
+      </div>
+
+      <!-- BUDGETS -->
+      <div class="page" id="page-budgets">
+
+        <!-- Add / edit budget -->
+        <div class="form-card" style="margin-bottom:18px;">
+          <div class="card-title" style="margin-bottom:16px;">➕ Add / Edit Budget</div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Category</label>
+              <select id="budgetCat">
+                <option>🍜 Food &amp; Drink</option>
+                <option>🚗 Transport</option>
+                <option>🛍️ Shopping</option>
+                <option>📱 Bills &amp; Utilities</option>
+                <option>🎬 Entertainment</option>
+                <option>💊 Health</option>
+                <option>💼 Salary</option>
+                <option>🏦 Transfer</option>
+                <option>📦 Other</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>Monthly Limit (₫)</label>
+              <input type="number" id="budgetLimit" placeholder="e.g. 2000000">
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="addOrUpdateBudget()" style="width:100%;padding:12px;">💾 Save Budget</button>
+        </div>
+
+        <!-- Budget cards -->
+        <div id="fullBudgetList" style="display:grid;gap:14px;"></div>
+      </div>
+
+      <!-- SAVINGS -->
+      <div class="page" id="page-savings">
+        <div class="savings-grid" id="savingsGrid"></div>
+        <div class="form-card">
+          <div class="card-title" style="margin-bottom:16px;">Add Savings Goal</div>
+          <div class="form-row">
+            <div class="form-field"><label>Goal Name</label><input id="goalName" placeholder="e.g. New Laptop"></div>
+            <div class="form-field"><label>Emoji</label><input id="goalEmoji" placeholder="🎯" maxlength="2"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Target (₫)</label><input type="number" id="goalTarget" placeholder="10000000"></div>
+            <div class="form-field"><label>Current (₫)</label><input type="number" id="goalCurrent" placeholder="0"></div>
+          </div>
+          <button class="btn btn-primary" onclick="addGoal()" style="margin-top:4px;">Add Goal</button>
+        </div>
+      </div>
+
+      <!-- ADD -->
+      <div class="page" id="page-add">
+        <div class="form-card">
+          <div class="card-title" style="margin-bottom:18px;">Add Transaction</div>
+          <div class="form-row">
+            <div class="form-field"><label>Type</label>
+              <select id="txType"><option value="expense">💸 Expense</option><option value="income">💰 Income</option></select>
+            </div>
+            <div class="form-field"><label>Amount (₫)</label><input type="number" id="txAmount" placeholder="0"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Description</label><input id="txDesc" placeholder="e.g. Grab Food"></div>
+            <div class="form-field"><label>Category</label>
+              <select id="txCategory">
+                <option>🍜 Food & Drink</option><option>🚗 Transport</option><option>🛍️ Shopping</option>
+                <option>💊 Health</option><option>🎬 Entertainment</option><option>📱 Bills & Utilities</option>
+                <option>💼 Salary</option><option>🏦 Transfer</option><option>📦 Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Date</label><input type="date" id="txDate"></div>
+            <div class="form-field"><label>Account</label>
+              <select id="txAccount">
+                <option>Techcombank</option><option>VPBank</option><option>Vietcombank</option><option>MBBank</option><option>ACB</option><option>BIDV</option><option>ZaloPay</option><option>LioBank</option><option>Momo Wallet</option><option>Cash</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-field" style="margin-bottom:14px;"><label>Note (optional)</label><textarea id="txNote" placeholder="Additional notes…"></textarea></div>
+          <button class="btn btn-primary" onclick="addTx()" style="width:100%;padding:13px;">💾 Save Transaction</button>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- Mobile bottom nav -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-items">
+    <button class="mobile-nav-item active" onclick="nav('dashboard',this)" id="mn-dashboard"><span class="mn-icon">📊</span>Dashboard</button>
+    <button class="mobile-nav-item" onclick="nav('transactions',this)" id="mn-transactions"><span class="mn-icon">💳</span>Ledger</button>
+    <button class="mobile-nav-item" onclick="nav('add',this)" id="mn-add"><span class="mn-icon">➕</span>Add</button>
+    <button class="mobile-nav-item" onclick="nav('budgets',this)" id="mn-budgets"><span class="mn-icon">🎯</span>Budget</button>
+    <button class="mobile-nav-item" onclick="openNotif()" id="mn-notif"><span class="mn-icon">🔔</span>Bank SMS</button>
+  </div>
+</nav>
+
+<!-- Notification overlay + panel -->
+<div class="notif-overlay" id="notifOverlay" onclick="closeNotif()"></div>
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-head">
+    <div class="notif-title">🏦 Bank Parser</div>
+    <button class="close-btn" onclick="closeNotif()">✕</button>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.65;">Paste an SMS or upload a screenshot — the parser will auto-extract your transaction.</p>
+
+  <!-- Tab switcher -->
+  <div style="display:flex;gap:0;background:var(--surface2);border-radius:10px;padding:4px;margin-bottom:16px;">
+    <button id="tabSmsBtn" onclick="switchParseTab('sms')" style="flex:1;padding:8px;border:none;border-radius:7px;cursor:pointer;font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;font-weight:600;background:var(--accent);color:#000;transition:all .2s;">💬 SMS / Text</button>
+    <button id="tabImgBtn" onclick="switchParseTab('img')" style="flex:1;padding:8px;border:none;border-radius:7px;cursor:pointer;font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;font-weight:600;background:transparent;color:var(--muted);transition:all .2s;">📷 Screenshot</button>
+  </div>
+
+  <!-- SMS tab -->
+  <div id="tabSms">
+    <div class="form-field" style="margin-bottom:10px;"><label>Paste SMS / Notification</label>
+      <textarea id="bankSms" style="width:100%;height:110px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:12px;color:var(--text);font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;resize:none;outline:none;line-height:1.6;" placeholder="Techcombank: TK 14x5678 ghi co 2,500,000 VND luc 10:30 23/02/2026. ND: CHUYEN TIEN TU NGUYEN VAN A"></textarea>
+    </div>
+    <button class="parse-btn" onclick="parseSms()">⚡ Parse SMS</button>
+  </div>
+
+  <!-- Image tab -->
+  <div id="tabImg" style="display:none;">
+    <!-- Drop zone -->
+    <div id="dropZone" onclick="document.getElementById('imgInput').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)'" ondragleave="this.style.borderColor='var(--border)'" ondrop="handleImgDrop(event)"
+      style="border:2px dashed var(--border);border-radius:12px;padding:32px 16px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:12px;position:relative;">
+      <div id="dropZoneContent">
+        <div style="font-size:36px;margin-bottom:10px;">📷</div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:4px;">Upload notification screenshot</div>
+        <div style="font-size:12px;color:var(--muted);">Tap to choose or drag & drop<br>Supports JPG, PNG, WEBP</div>
+      </div>
+      <img id="previewImg" style="display:none;max-width:100%;max-height:180px;border-radius:8px;object-fit:contain;" />
+      <input type="file" id="imgInput" accept="image/*" style="display:none;" onchange="handleImgSelect(event)">
+    </div>
+    <!-- Paste from clipboard -->
+    <button onclick="pasteFromClipboard()" style="width:100%;margin-bottom:10px;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">📋 Paste from Clipboard (Ctrl+V)</button>
+    <!-- OCR status -->
+    <div id="ocrStatus" style="display:none;text-align:center;padding:12px;font-size:13px;color:var(--muted);"></div>
+    <button class="parse-btn" id="parseImgBtn" onclick="parseImage()" style="display:none;">🔍 Extract Transaction from Image</button>
+  </div>
+
+  <div class="parsed-result" id="parsedResult">
+    <div style="font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:700;margin-bottom:14px;color:var(--accent);">✓ Transaction Detected</div>
+    <label class="parsed-label">Type</label>
+    <select class="parsed-input" id="pType"><option value="income">💰 Income</option><option value="expense">💸 Expense</option></select>
+    <label class="parsed-label">Amount (₫)</label>
+    <input class="parsed-input" type="number" id="pAmount">
+    <label class="parsed-label">Description</label>
+    <input class="parsed-input" type="text" id="pDesc">
+    <label class="parsed-label">Category</label>
+    <select class="parsed-input" id="pCat">
+      <option>💼 Salary</option><option>🏦 Transfer</option><option>🍜 Food & Drink</option>
+      <option>🚗 Transport</option><option>🛍️ Shopping</option><option>📱 Bills & Utilities</option><option>📦 Other</option>
+    </select>
+    <label class="parsed-label">Account</label>
+    <input class="parsed-input" type="text" id="pAccount">
+    <label class="parsed-label">Date</label>
+    <input class="parsed-input" type="date" id="pDate">
+    <button class="save-btn" onclick="saveParsed()">💾 Save Transaction</button>
+  </div>
+
+  <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);">
+    <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Try sample SMS:</div>
+    <button class="sample-pill" onclick="fillSample(this)" data-sms="Techcombank: TK 14x5678 ghi co 2,500,000 VND luc 10:30 23/02/2026. SD: 24,850,000 VND. ND: CHUYEN TIEN TU NGUYEN VAN A">📥 Techcombank — transfer in</button>
+    <button class="sample-pill" onclick="fillSample(this)" data-sms="VPBank: TK 98x1234 ghi no 150,000 VND luc 12:45 23/02/2026. SD: 12,300,000 VND. ND: THANH TOAN GRAB FOOD">📤 VPBank — Grab Food payment</button>
+    <button class="sample-pill" onclick="fillSample(this)" data-sms="VCB: Tai khoan 001xxxx PHAT SINH NO 500,000 VND ngay 23/02/2026 09:15. So du: 8,650,000 VND. Noi dung: Thanh toan dien nuoc T2/2026">📤 VietcomBank — bill payment</button>
+    <button class="sample-pill" onclick="fillSample(this)" data-sms="MBBank: TK 09876543 nhan duoc 15,000,000 VND luc 08:00 01/02/2026. So du: 15,500,000 VND. ND: LUONG THANG 2/2026 CONG TY ABC">📥 MBBank — salary received</button>
+    <button class="sample-pill" onclick="fillSample(this)" data-sms="ZaloPay: Vi ZaloPay cua ban bi tru 75,000 VND luc 14:22 23/02/2026. ND: Thanh toan GRAB FOOD don hang #ZP123456. So du: 2,450,000 VND">📤 ZaloPay — Grab Food payment</button>
+    <button class="sample-pill" onclick="fillSample(this)" data-sms="LioBank: TK 7x2345 ghi co 500,000 VND luc 09:10 23/02/2026. SD: 3,200,000 VND. ND: CHUYEN TIEN TU NGUYEN VAN B">📥 LioBank — transfer in</button>
+    <button class="sample-pill" onclick="fillSample(this)" data-sms="LioBank: TK 7x2345 ghi no 299,000 VND luc 18:05 23/02/2026. SD: 2,901,000 VND. ND: Thanh toan Shopee don hang SH987654">📤 LioBank — Shopee payment</button>
+  </div>
+</div>
+
+<!-- Edit Transaction Modal -->
+<div class="modal-overlay" id="editModal" onclick="if(event.target===this)closeEditModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">✏️ Edit Transaction</div>
+      <button class="close-btn" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-field">
+          <label>Type</label>
+          <select id="eTxType">
+            <option value="expense">💸 Expense</option>
+            <option value="income">💰 Income</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Amount (₫)</label>
+          <input type="number" id="eTxAmount" placeholder="0">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Description</label>
+          <input type="text" id="eTxDesc" placeholder="e.g. Grab Food">
+        </div>
+        <div class="form-field">
+          <label>Category</label>
+          <select id="eTxCategory">
+            <option>🍜 Food & Drink</option>
+            <option>🚗 Transport</option>
+            <option>🛍️ Shopping</option>
+            <option>💊 Health</option>
+            <option>🎬 Entertainment</option>
+            <option>📱 Bills & Utilities</option>
+            <option>💼 Salary</option>
+            <option>🏦 Transfer</option>
+            <option>📦 Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Date</label>
+          <input type="date" id="eTxDate">
+        </div>
+        <div class="form-field">
+          <label>Account</label>
+          <select id="eTxAccount">
+            <option>Techcombank</option>
+            <option>VPBank</option>
+            <option>Vietcombank</option>
+            <option>MBBank</option>
+            <option>ACB</option>
+            <option>BIDV</option>
+            <option>ZaloPay</option>
+            <option>LioBank</option>
+            <option>Momo Wallet</option>
+            <option>Cash</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Note</label>
+        <input type="text" id="eTxNote" placeholder="Optional note">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="deleteTxFromModal()" style="background:rgba(244,63,94,.12);color:#f43f5e;border:1px solid rgba(244,63,94,.25);flex-shrink:0;">🗑️ Delete</button>
+      <button class="btn btn-outline" onclick="closeEditModal()" style="flex:1;">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEditedTx()" style="flex:1;">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+/* ═══════════════════════ DATA ═══════════════════════ */
+let transactions = [
+  {id:1,type:'income',amount:15000000,desc:'Lương tháng 2',category:'💼 Salary',account:'Techcombank',date:'2026-02-01',note:''},
+  {id:2,type:'expense',amount:350000,desc:'Grab Food - Bún bò',category:'🍜 Food & Drink',account:'Momo Wallet',date:'2026-02-03',note:''},
+  {id:3,type:'expense',amount:120000,desc:'Grab Bike - Quận 1',category:'🚗 Transport',account:'Momo Wallet',date:'2026-02-04',note:''},
+  {id:4,type:'expense',amount:500000,desc:'Tiền điện nước T2',category:'📱 Bills & Utilities',account:'VPBank',date:'2026-02-05',note:''},
+  {id:5,type:'expense',amount:250000,desc:'Highlands Coffee',category:'🍜 Food & Drink',account:'VPBank',date:'2026-02-10',note:''},
+  {id:6,type:'income',amount:500000,desc:'Freelance Design',category:'🏦 Transfer',account:'VPBank',date:'2026-02-12',note:''},
+  {id:7,type:'expense',amount:1200000,desc:'Shopee Shopping',category:'🛍️ Shopping',account:'VPBank',date:'2026-02-14',note:''},
+  {id:8,type:'expense',amount:200000,desc:'CGV - Phim Valentine',category:'🎬 Entertainment',account:'Momo Wallet',date:'2026-02-14',note:''},
+  {id:9,type:'expense',amount:80000,desc:'Xăng xe',category:'🚗 Transport',account:'Cash',date:'2026-02-18',note:''},
+  {id:10,type:'expense',amount:450000,desc:'Đi nhậu với bạn',category:'🍜 Food & Drink',account:'Cash',date:'2026-02-20',note:''},
+];
+
+let budgets = [
+  {name:'🍜 Food & Drink',limit:3000000,color:'#4ade80'},
+  {name:'🚗 Transport',limit:800000,color:'#38bdf8'},
+  {name:'🛍️ Shopping',limit:2000000,color:'#f97316'},
+  {name:'📱 Bills & Utilities',limit:1000000,color:'#a78bfa'},
+  {name:'🎬 Entertainment',limit:500000,color:'#f43f5e'},
+];
+
+let savings = [
+  {name:'Emergency Fund',emoji:'🛡️',target:50000000,current:12000000},
+  {name:'New MacBook',emoji:'💻',target:35000000,current:22000000},
+  {name:'Vietnam Trip',emoji:'✈️',target:15000000,current:8500000},
+];
+
+const catColors = {
+  '🍜 Food & Drink':'#4ade80','🚗 Transport':'#38bdf8','🛍️ Shopping':'#f97316',
+  '📱 Bills & Utilities':'#a78bfa','🎬 Entertainment':'#f43f5e','💼 Salary':'#22d3ee',
+  '🏦 Transfer':'#fb923c','💊 Health':'#f472b6','📦 Other':'#94a3b8',
+};
+
+let nextId = 11;
+
+/* ═════════════════════ UTILITIES ════════════════════ */
+const fmt = n => '₫' + Number(n).toLocaleString('vi-VN');
+const $ = id => document.getElementById(id);
+
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2700);
+}
+
+function monthlySum(type) {
+  const m = new Date().getMonth();
+  return transactions.filter(t=>t.type===type && new Date(t.date).getMonth()===m).reduce((s,t)=>s+t.amount,0);
+}
+function totalBal() { return transactions.reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0); }
+function catSpend(cat) {
+  const m = new Date().getMonth();
+  return transactions.filter(t=>t.type==='expense' && t.category===cat && new Date(t.date).getMonth()===m).reduce((s,t)=>s+t.amount,0);
+}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+let currentPage = 'dashboard';
+
+function nav(page, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  $('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  document.querySelectorAll('.mobile-nav-item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const titles={dashboard:'Dashboard',transactions:'Transactions',budgets:'Budgets',savings:'Savings Goals',add:'Add Transaction'};
+  $('pageTitle').textContent = titles[page]||page;
+  currentPage = page;
+  if(page==='transactions') renderAllTx();
+  if(page==='budgets') renderFullBudgets();
+  if(page==='savings') renderSavings();
+  if(page==='add') $('txDate').value = today();
+  toggleSidebar(false);
+}
+
+function today() { return new Date().toISOString().slice(0,10); }
+
+let sidebarOpen = false;
+function toggleSidebar(force) {
+  sidebarOpen = force !== undefined ? force : !sidebarOpen;
+  $('sidebar').classList.toggle('open', sidebarOpen);
+  const close = document.querySelector('.sb-close');
+  if(close) close.style.display = sidebarOpen ? 'flex' : 'none';
+}
+
+/* ═══════════════════════ RENDER ════════════════════ */
+function renderStats() {
+  const inc = monthlySum('income'), exp = monthlySum('expense'), bal = totalBal();
+  $('totalBalance').textContent = fmt(bal);
+  $('monthlyIncome').textContent = fmt(inc);
+  $('monthlyExpense').textContent = fmt(exp);
+  const net = Math.max(0,inc-exp);
+  $('netSavings').textContent = fmt(net);
+  $('savingsRate').textContent = inc>0 ? Math.round(net/inc*100)+'%' : '0%';
+}
+
+function txHTML(t, showActions = true) {
+  const color = catColors[t.category]||'#94a3b8';
+  const sign = t.type==='income'?'+':'-';
+  const cls = t.type==='income'?'inc':'exp';
+  const d = new Date(t.date).toLocaleDateString('vi-VN');
+  const actions = showActions ? `
+    <div class="tx-actions">
+      <button class="tx-btn tx-btn-edit" onclick="event.stopPropagation();openEditModal('${t.id}')" title="Edit">✏️</button>
+      <button class="tx-btn tx-btn-del" onclick="event.stopPropagation();deleteTx('${t.id}')" title="Delete">🗑️</button>
+    </div>` : '';
+  return `<li class="tx-item" onclick="openEditModal('${t.id}')">
+    <div class="tx-icon" style="background:${color}22;color:${color}">${t.category.split(' ')[0]}</div>
+    <div class="tx-info">
+      <div class="tx-name">${t.desc}</div>
+      <div class="tx-cat">${t.category} · ${t.account}${t.fromNotification ? ' ⚡' : ''}</div>
+    </div>
+    <div class="tx-right">
+      <div class="tx-amount ${cls}">${sign}${fmt(t.amount)}</div>
+      <div class="tx-date">${d}</div>
+    </div>
+    ${actions}
+  </li>`;
+}
+
+function renderRecent() {
+  $('recentTxList').innerHTML = [...transactions].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,8).map(txHTML).join('');
+}
+
+function renderAllTx() {
+  const q = ($('txSearch')?.value||'').toLowerCase();
+  const f = $('txFilter')?.value||'all';
+  let list = [...transactions].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  if(f!=='all') list = list.filter(t=>t.type===f);
+  if(q) list = list.filter(t=>t.desc.toLowerCase().includes(q)||t.category.toLowerCase().includes(q)||t.account.toLowerCase().includes(q));
+  $('allTxList').innerHTML = list.length ? list.map(txHTML).join('') : '<li style="padding:24px;text-align:center;color:var(--muted)">No transactions found</li>';
+}
+
+function renderBudgets() {
+  $('budgetList').innerHTML = budgets.map(b=>{
+    const spent=catSpend(b.name), pct=Math.min(100,Math.round(spent/b.limit*100));
+    const clr = pct>90?'#f43f5e':pct>70?'#f97316':b.color;
+    return `<div class="budget-item">
+      <div class="budget-meta"><span>${b.name}</span><span class="budget-amounts">${fmt(spent)}/${fmt(b.limit)}</span></div>
+      <div class="budget-bar"><div class="budget-fill" style="width:${pct}%;background:${clr}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderFullBudgets() {
+  if (!budgets.length) {
+    $('fullBudgetList').innerHTML = '<div class="card" style="padding:32px;text-align:center;color:var(--muted);">No budgets yet. Add one above ☝️</div>';
+    return;
+  }
+  $('fullBudgetList').innerHTML = budgets.map((b,i)=>{
+    const spent=catSpend(b.name), pct=Math.min(100,Math.round(spent/b.limit*100)), left=Math.max(0,b.limit-spent);
+    const clr=pct>90?'#f43f5e':pct>70?'#f97316':b.color;
+    return `<div class="card" style="padding:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span style="font-weight:700;font-size:15px">${b.name}</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="badge" style="background:${clr}22;color:${clr}">${pct}% used</span>
+          <button onclick="editBudget(${i})" style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;padding:4px 10px;cursor:pointer;">✏️ Edit</button>
+          <button onclick="deleteBudget(${i})" style="background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.3);border-radius:7px;color:#f43f5e;font-size:12px;padding:4px 10px;cursor:pointer;">🗑️</button>
+        </div>
+      </div>
+      <div class="budget-bar" style="height:10px;margin-bottom:12px;"><div class="budget-fill" style="width:${pct}%;background:${clr}"></div></div>
+      <div style="display:flex;gap:20px;font-size:13px;color:var(--muted);flex-wrap:wrap;">
+        <span>Spent: <b style="color:var(--text)">${fmt(spent)}</b></span>
+        <span>Limit: <b style="color:var(--text)">${fmt(b.limit)}</b></span>
+        <span>Left: <b style="color:${clr}">${fmt(left)}</b></span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function addOrUpdateBudget() {
+  const cat = $('budgetCat').value;
+  const limit = parseInt($('budgetLimit').value);
+  if (!limit || limit <= 0) return toast('⚠️ Enter a valid limit amount');
+  const existing = budgets.findIndex(b => b.name === cat);
+  const colors = {'🍜 Food & Drink':'#4ade80','🚗 Transport':'#38bdf8','🛍️ Shopping':'#f97316',
+    '📱 Bills & Utilities':'#a78bfa','🎬 Entertainment':'#f43f5e','💊 Health':'#f472b6',
+    '💼 Salary':'#22d3ee','🏦 Transfer':'#fb923c','📦 Other':'#94a3b8'};
+  const color = colors[cat] || '#94a3b8';
+  if (existing >= 0) {
+    budgets[existing].limit = limit;
+    toast('✅ Budget updated!');
+  } else {
+    budgets.push({name:cat, limit, color});
+    toast('✅ Budget added!');
+  }
+  $('budgetLimit').value = '';
+  renderFullBudgets(); renderBudgets();
+}
+
+function editBudget(i) {
+  const b = budgets[i];
+  $('budgetCat').value = b.name;
+  $('budgetLimit').value = b.limit;
+  $('budgetLimit').focus();
+  toast('✏️ Edit the limit and press Save');
+}
+
+function deleteBudget(i) {
+  const name = budgets[i].name;
+  budgets.splice(i, 1);
+  renderFullBudgets(); renderBudgets();
+  toast(`🗑️ Removed ${name} budget`);
+}
+
+function renderSavings() {
+  $('savingsGrid').innerHTML = savings.map(s=>{
+    const pct=Math.round(s.current/s.target*100);
+    return `<div class="goal-card">
+      <div class="goal-emoji">${s.emoji}</div>
+      <div class="goal-name">${s.name}</div>
+      <div class="goal-target">${fmt(s.current)} of ${fmt(s.target)}</div>
+      <div class="goal-bar"><div class="goal-fill" style="width:${pct}%"></div></div>
+      <div class="goal-pct">${pct}% reached</div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════ CHART ══════════════════════ */
+let chart;
+function drawChart(period='week') {
+  const ctx = $('cashFlowChart').getContext('2d');
+  if(chart) chart.destroy();
+  const labels = period==='week'?['Mon','Tue','Wed','Thu','Fri','Sat','Sun']:
+    period==='month'?['Week 1','Week 2','Week 3','Week 4']:
+    ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const rnd=(min,max)=>Math.round(Math.random()*(max-min)+min);
+  chart = new Chart(ctx,{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'Income',data:labels.map(()=>rnd(2e6,12e6)),backgroundColor:'rgba(74,222,128,.7)',borderRadius:6,borderSkipped:false},
+      {label:'Expense',data:labels.map(()=>rnd(5e5,6e6)),backgroundColor:'rgba(244,63,94,.6)',borderRadius:6,borderSkipped:false},
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:true,
+      plugins:{legend:{labels:{color:'#94a3b8',font:{family:'Be Vietnam Pro'}}}},
+      scales:{
+        x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#64748b',font:{family:'Be Vietnam Pro'}}},
+        y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#64748b',font:{family:'Be Vietnam Pro'},callback:v=>'₫'+(v/1e6).toFixed(1)+'M'}},
+      }
+    }
+  });
+}
+function switchPeriod(el,p){
+  document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active'); drawChart(p);
+}
+
+/* ═══════════════════════ ACTIONS ════════════════════ */
+function addTx() {
+  const type=$('txType').value, amount=parseInt($('txAmount').value),
+    desc=$('txDesc').value.trim(), cat=$('txCategory').value,
+    date=$('txDate').value, account=$('txAccount').value, note=($('txNote').value||'').trim();
+  if(!amount||!desc||!date) return toast('⚠️ Please fill required fields');
+  transactions.push({id:nextId++,type,amount,desc,category:cat,account,date,note});
+  renderStats(); renderRecent(); renderBudgets();
+  $('txAmount').value=''; $('txDesc').value=''; $('txNote').value='';
+  toast('✅ Transaction saved!');
+}
+
+function addGoal() {
+  const name=$('goalName').value.trim(), emoji=$('goalEmoji').value||'🎯',
+    target=parseInt($('goalTarget').value), current=parseInt($('goalCurrent').value)||0;
+  if(!name||!target) return toast('⚠️ Please fill goal name and target');
+  savings.push({name,emoji,target,current});
+  renderSavings();
+  $('goalName').value=''; $('goalEmoji').value=''; $('goalTarget').value=''; $('goalCurrent').value='';
+  toast('🏦 Savings goal added!');
+}
+
+/* ══════════════════════ PARSE TAB SWITCH ══════════════════════ */
+function switchParseTab(tab) {
+  const isSms = tab === 'sms';
+  $('tabSms').style.display = isSms ? 'block' : 'none';
+  $('tabImg').style.display = isSms ? 'none' : 'block';
+  $('tabSmsBtn').style.cssText = isSms
+    ? 'flex:1;padding:8px;border:none;border-radius:7px;cursor:pointer;font-family:"Be Vietnam Pro",sans-serif;font-size:13px;font-weight:600;background:var(--accent);color:#000;transition:all .2s;'
+    : 'flex:1;padding:8px;border:none;border-radius:7px;cursor:pointer;font-family:"Be Vietnam Pro",sans-serif;font-size:13px;font-weight:600;background:transparent;color:var(--muted);transition:all .2s;';
+  $('tabImgBtn').style.cssText = !isSms
+    ? 'flex:1;padding:8px;border:none;border-radius:7px;cursor:pointer;font-family:"Be Vietnam Pro",sans-serif;font-size:13px;font-weight:600;background:var(--accent);color:#000;transition:all .2s;'
+    : 'flex:1;padding:8px;border:none;border-radius:7px;cursor:pointer;font-family:"Be Vietnam Pro",sans-serif;font-size:13px;font-weight:600;background:transparent;color:var(--muted);transition:all .2s;';
+  $('parsedResult').classList.remove('show');
+}
+
+/* ══════════════════ IMAGE UPLOAD & OCR ══════════════════ */
+let currentImageBase64 = null;
+let currentImageMime = 'image/jpeg';
+
+function handleImgSelect(e) {
+  const file = e.target.files[0];
+  if (file) loadImageFile(file);
+}
+
+function handleImgDrop(e) {
+  e.preventDefault();
+  $('dropZone').style.borderColor = 'var(--border)';
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) loadImageFile(file);
+}
+
+async function pasteFromClipboard() {
+  try {
+    const items = await navigator.clipboard.read();
+    for (const item of items) {
+      const imgType = item.types.find(t => t.startsWith('image/'));
+      if (imgType) {
+        const blob = await item.getType(imgType);
+        loadImageFile(new File([blob], 'paste.png', { type: imgType }));
+        return;
+      }
+    }
+    toast('⚠️ No image found in clipboard');
+  } catch {
+    toast('⚠️ Paste failed — try uploading the file directly');
+  }
+}
+
+document.addEventListener('paste', e => {
+  if (!$('notifPanel').classList.contains('open')) return;
+  if ($('tabImg') && $('tabImg').style.display === 'none') return;
+  const item = [...e.clipboardData.items].find(i => i.type.startsWith('image/'));
+  if (item) { const blob = item.getAsFile(); if (blob) loadImageFile(blob); }
+});
+
+function loadImageFile(file) {
+  currentImageMime = file.type || 'image/jpeg';
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const dataUrl = ev.target.result;
+    currentImageBase64 = dataUrl.split(',')[1];
+    const prev = $('previewImg');
+    prev.src = dataUrl;
+    prev.style.display = 'block';
+    $('dropZoneContent').style.display = 'none';
+    $('ocrStatus').style.display = 'none';
+    $('parseImgBtn').style.display = 'block';
+    $('parsedResult').classList.remove('show');
+    // Show clear button
+    let clrBtn = $('imgClearBtn');
+    if (!clrBtn) {
+      clrBtn = document.createElement('button');
+      clrBtn.id = 'imgClearBtn';
+      clrBtn.onclick = clearImage;
+      clrBtn.title = 'Remove image';
+      clrBtn.style.cssText = 'position:absolute;top:8px;right:8px;background:rgba(0,0,0,.65);border:none;border-radius:50%;width:26px;height:26px;color:#fff;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;line-height:1;z-index:5;';
+      clrBtn.textContent = '✕';
+      $('dropZone').appendChild(clrBtn);
+    }
+    clrBtn.style.display = 'flex';
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearImage() {
+  currentImageBase64 = null;
+  $('previewImg').style.display = 'none';
+  $('previewImg').src = '';
+  $('dropZoneContent').style.display = 'block';
+  $('parseImgBtn').style.display = 'none';
+  $('ocrStatus').style.display = 'none';
+  $('imgInput').value = '';
+  $('parsedResult').classList.remove('show');
+  const clrBtn = $('imgClearBtn');
+  if (clrBtn) clrBtn.style.display = 'none';
+}
+
+async function parseImage() {
+  if (!currentImageBase64) return toast('⚠️ Please upload an image first');
+  const status = $('ocrStatus');
+  status.innerHTML = '<div class="ocr-loading">Reading image…</div>';
+  status.style.display = 'block';
+  $('parseImgBtn').disabled = true;
+
+  try {
+    // Draw image onto canvas and read pixel data via Tesseract-style pattern matching
+    // We use a hidden canvas to get the image, then send to Claude Vision via claude.ai artifact API
+    const img = $('previewImg');
+
+    // Build a canvas with the image
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+
+    // Re-encode to smaller JPEG for faster processing
+    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
+    const mime = 'image/jpeg';
+
+    // Call Claude vision API (proxied through anthropic artifact endpoint)
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-version': '2023-06-01',
+        'anthropic-beta': 'artifacts-2024-10-22'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 800,
+        messages: [{
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: { type: 'base64', media_type: mime, data: compressedBase64 }
+            },
+            {
+              type: 'text',
+              text: `You are reading a Vietnamese bank or e-wallet transaction screenshot (ZaloPay, Momo, Techcombank, VPBank, etc).
+Extract details and return ONLY raw JSON, no markdown fences, no explanation.
+
+{
+  "type": "income" or "expense",
+  "amount": integer (VND, no commas. If partially visible e.g. "-15.000" = 15000),
+  "description": "short description of what the payment is for",
+  "bank": "ZaloPay / Momo / Techcombank / VPBank / Vietcombank / MBBank / LioBank / etc",
+  "date": "YYYY-MM-DD (from screenshot, today=${new Date().toISOString().slice(0,10)} if not found)",
+  "category": one of exactly: "🍜 Food & Drink" | "🚗 Transport" | "🛍️ Shopping" | "📱 Bills & Utilities" | "🎬 Entertainment" | "💊 Health" | "💼 Salary" | "🏦 Transfer" | "📦 Other"
+}
+
+Vietnamese clues:
+- "trừ tiền / ghi nợ / thanh toán / chuyển tiền đi" → expense
+- "nhận tiền / ghi có / hoàn tiền" → income
+- "Người nhận" = recipient, "Ngân hàng" = bank, "Số tiền" = amount
+- "Khai dung / phi dich vu / hoa don" = bills
+- Amount shown as "-15.000đ" means 15000 VND expense`
+            }
+          ]
+        }]
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err?.error?.message || `HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    const raw = (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
+
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      // Try to extract JSON object from response
+      const match = raw.match(/\{[\s\S]+\}/);
+      if (!match) throw new Error('Could not parse AI response as JSON');
+      parsed = JSON.parse(match[0]);
+    }
+
+    // Fill parsed result fields
+    $('pType').value   = parsed.type === 'income' ? 'income' : 'expense';
+    $('pAmount').value = String(parsed.amount || '').replace(/[^0-9]/g, '');
+    $('pDesc').value   = parsed.description || '';
+    $('pAccount').value = parsed.bank || 'ZaloPay';
+    $('pDate').value   = parsed.date || today();
+
+    // Match category dropdown
+    const cs = $('pCat');
+    const tc = (parsed.category || '').trim();
+    for (let i = 0; i < cs.options.length; i++) {
+      if (cs.options[i].text.trim() === tc) { cs.selectedIndex = i; break; }
+    }
+
+    status.style.display = 'none';
+    $('parsedResult').classList.add('show');
+    toast('🔍 Transaction extracted!');
+
+  } catch (err) {
+    console.error('OCR error:', err);
+    // ── Fallback: local regex OCR on the raw base64 won't work,
+    //    so show helpful manual-fill message instead ──
+    status.innerHTML = `
+      <div style="background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);border-radius:10px;padding:14px;font-size:13px;color:var(--text);line-height:1.7;">
+        <div style="color:var(--danger);font-weight:700;margin-bottom:8px;">⚠️ Auto-read failed: ${err.message}</div>
+        <div style="color:var(--muted);margin-bottom:10px;">This feature needs the Anthropic API. Fill in the fields below manually from your screenshot:</div>
+        <div style="display:grid;gap:6px;">
+          <button onclick="manualFillFromImage('zalopay')" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);border-radius:8px;padding:9px;color:var(--accent);font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;cursor:pointer;text-align:left;">
+            ⚡ I can see a ZaloPay screenshot → pre-fill as ZaloPay expense
+          </button>
+          <button onclick="manualFillFromImage('momo')" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.3);border-radius:8px;padding:9px;color:var(--accent);font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;cursor:pointer;text-align:left;">
+            ⚡ I can see a Momo screenshot → pre-fill as Momo expense
+          </button>
+          <button onclick="switchParseTab('sms')" style="background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:9px;color:var(--muted);font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:13px;cursor:pointer;text-align:left;">
+            💬 Switch to SMS tab and paste the notification text instead
+          </button>
+        </div>
+      </div>`;
+  } finally {
+    $('parseImgBtn').disabled = false;
+  }
+}
+
+function manualFillFromImage(bank) {
+  $('pType').value = 'expense';
+  $('pAmount').value = '';
+  $('pDesc').value = bank === 'zalopay' ? 'Khai dung ZaloPay chuyen tien' : 'Momo payment';
+  $('pAccount').value = bank === 'zalopay' ? 'ZaloPay' : 'Momo';
+  $('pDate').value = today();
+  const cs = $('pCat');
+  for (let i = 0; i < cs.options.length; i++) {
+    if (cs.options[i].text.includes('Transfer')) { cs.selectedIndex = i; break; }
+  }
+  $('ocrStatus').style.display = 'none';
+  $('parsedResult').classList.add('show');
+  $('pAmount').focus();
+  toast('✏️ Fill in the amount from your screenshot');
+}
+
+/* ═══════════════════ BANK SMS PARSER ═══════════════ */
+function openNotif() {
+  $('notifPanel').classList.add('open');
+  $('notifOverlay').classList.add('open');
+}
+function closeNotif() {
+  $('notifPanel').classList.remove('open');
+  $('notifOverlay').classList.remove('open');
+}
+function fillSample(el) {
+  $('bankSms').value = el.dataset.sms;
+  document.querySelectorAll('.sample-pill').forEach(s=>s.style.borderColor='transparent');
+  el.style.borderColor='var(--accent)';
+}
+
+function parseSms() {
+  const sms = $('bankSms').value.trim();
+  if(!sms) return toast('⚠️ Paste a bank notification first');
+
+  // Amount — pick the FIRST VND amount mentioned (the transaction, not balance)
+  const amounts = [...sms.matchAll(/(\d[\d,\.]+)\s*VND/gi)];
+  const amount = amounts.length ? parseInt(amounts[0][1].replace(/[,\.]/g,'')) : 0;
+
+  // Type
+  let type = 'expense';
+  if(/ghi co|phat sinh co|nhan duoc|nhan tien|\+/i.test(sms)) type='income';
+  if(/ghi no|phat sinh no|thanh toan|rut tien|bi tru|da tru/i.test(sms)) type='expense';
+
+  // Bank
+  let bank='Unknown';
+  if(/techcombank/i.test(sms)) bank='Techcombank';
+  else if(/vpbank/i.test(sms)) bank='VPBank';
+  else if(/vcb|vietcombank/i.test(sms)) bank='Vietcombank';
+  else if(/mbbank|mb:/i.test(sms)) bank='MBBank';
+  else if(/acb/i.test(sms)) bank='ACB';
+  else if(/bidv/i.test(sms)) bank='BIDV';
+  else if(/agribank/i.test(sms)) bank='Agribank';
+  else if(/tpbank/i.test(sms)) bank='TPBank';
+  else if(/sacombank/i.test(sms)) bank='Sacombank';
+  else if(/vietinbank/i.test(sms)) bank='VietinBank';
+  else if(/liobank|lio bank/i.test(sms)) bank='LioBank';
+  else if(/momo/i.test(sms)) bank='Momo';
+  else if(/zalopay|zalo pay/i.test(sms)) bank='ZaloPay';
+  else if(/vnpay/i.test(sms)) bank='VNPay';
+
+  // Description
+  let desc='Bank Transaction';
+  const nd = sms.match(/(?:ND|Noi dung|content)[:\s]+(.+?)(?:\.|$)/i);
+  if(nd) desc = nd[1].trim();
+
+  // Category
+  let cat='🏦 Transfer';
+  const dl = desc.toLowerCase();
+  if(/grab food|bun|com|pho|banh|cafe|coffee|tra sua|nuoc/i.test(dl)) cat='🍜 Food & Drink';
+  else if(/grab|xe|xang|bus|taxi|transport/i.test(dl)) cat='🚗 Transport';
+  else if(/dien|nuoc|internet|phone|bill|utility/i.test(dl)) cat='📱 Bills & Utilities';
+  else if(/shopee|lazada|tiki|shop/i.test(dl)) cat='🛍️ Shopping';
+  else if(/luong|salary|thuong|bonus/i.test(dl)||type==='income') cat='💼 Salary';
+
+  // Date
+  const dm = sms.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+  let date = today();
+  if(dm) date=`${dm[3]}-${dm[2].padStart(2,'0')}-${dm[1].padStart(2,'0')}`;
+
+  $('pType').value=type; $('pAmount').value=amount; $('pDesc').value=desc;
+  $('pAccount').value=bank; $('pDate').value=date;
+  const cs=$('pCat');
+  for(let i=0;i<cs.options.length;i++){if(cs.options[i].text.includes(cat.split(' ').slice(1).join(' '))){cs.selectedIndex=i;break;}}
+  $('parsedResult').classList.add('show');
+  toast('⚡ Notification parsed!');
+}
+
+function saveParsed() {
+  const type=$('pType').value, amount=parseInt($('pAmount').value);
+  const desc=$('pDesc').value, cat=$('pCat').value, account=$('pAccount').value, date=$('pDate').value;
+  if(!amount) return toast('⚠️ Invalid amount');
+  transactions.push({id:nextId++,type,amount,desc,category:cat,account,date,note:'via Bank SMS'});
+  renderStats(); renderRecent(); renderBudgets();
+  closeNotif();
+  $('parsedResult').classList.remove('show');
+  $('bankSms').value='';
+  toast('✅ Transaction saved from bank SMS!');
+}
+
+/* ══════════════════ EXCEL EXPORT ══════════════════ */
+function exportExcel() {
+  const wb = XLSX.utils.book_new();
+
+  /* ── Sheet 1: All Transactions ── */
+  const txData = [
+    ['WalletVN — Transaction Export', '', '', '', '', '', ''],
+    ['Exported on:', new Date().toLocaleString('vi-VN'), '', '', '', '', ''],
+    [],
+    ['#','Date','Type','Description','Category','Account','Amount (₫)','Note'],
+    ...transactions
+      .sort((a,b)=>new Date(b.date)-new Date(a.date))
+      .map((t,i)=>[
+        i+1,
+        new Date(t.date).toLocaleDateString('vi-VN'),
+        t.type==='income'?'Income':'Expense',
+        t.desc,
+        t.category,
+        t.account,
+        t.type==='income'?t.amount:-t.amount,
+        t.note||''
+      ]),
+    [],
+    ['', '', '', '', '', 'Total Income:', monthlySum('income'),''],
+    ['', '', '', '', '', 'Total Expense:', monthlySum('expense'),''],
+    ['', '', '', '', '', 'Net Balance:', totalBal(),''],
+  ];
+
+  const ws1 = XLSX.utils.aoa_to_sheet(txData);
+
+  // Column widths
+  ws1['!cols'] = [{wch:5},{wch:14},{wch:10},{wch:30},{wch:20},{wch:14},{wch:18},{wch:20}];
+
+  // Style header rows
+  const titleCell = ws1['A1'];
+  if(titleCell) { titleCell.s = { font:{bold:true,sz:14,color:{rgb:'4ADE80'}}, fill:{fgColor:{rgb:'0A0D14'}} }; }
+
+  // Merge title
+  ws1['!merges'] = [{s:{r:0,c:0},e:{r:0,c:6}}];
+
+  XLSX.utils.book_append_sheet(wb, ws1, 'Transactions');
+
+  /* ── Sheet 2: Budget Summary ── */
+  const budgetData = [
+    ['WalletVN — Budget Summary', '', '', ''],
+    ['Month: February 2026', '', '', ''],
+    [],
+    ['Category','Budget (₫)','Spent (₫)','Remaining (₫)','Usage %'],
+    ...budgets.map(b=>{
+      const spent=catSpend(b.name), left=Math.max(0,b.limit-spent), pct=Math.min(100,Math.round(spent/b.limit*100));
+      return [b.name, b.limit, spent, left, pct/100];
+    }),
+    [],
+    ['TOTAL', budgets.reduce((s,b)=>s+b.limit,0), budgets.reduce((s,b)=>s+catSpend(b.name),0),'',''],
+  ];
+  const ws2 = XLSX.utils.aoa_to_sheet(budgetData);
+  ws2['!cols']=[{wch:22},{wch:16},{wch:16},{wch:16},{wch:10}];
+  ws2['!merges']=[{s:{r:0,c:0},e:{r:0,c:4}}];
+  XLSX.utils.book_append_sheet(wb, ws2, 'Budgets');
+
+  /* ── Sheet 3: Savings Goals ── */
+  const savData = [
+    ['WalletVN — Savings Goals', '', '', ''],
+    [],
+    ['Goal','Emoji','Target (₫)','Saved (₫)','Remaining (₫)','Progress %'],
+    ...savings.map(s=>[s.name, s.emoji, s.target, s.current, Math.max(0,s.target-s.current), Math.round(s.current/s.target*100)/100]),
+  ];
+  const ws3 = XLSX.utils.aoa_to_sheet(savData);
+  ws3['!cols']=[{wch:20},{wch:8},{wch:16},{wch:14},{wch:16},{wch:12}];
+  ws3['!merges']=[{s:{r:0,c:0},e:{r:0,c:5}}];
+  XLSX.utils.book_append_sheet(wb, ws3, 'Savings Goals');
+
+  /* ── Sheet 4: Monthly Summary ── */
+  const inc=monthlySum('income'), exp=monthlySum('expense');
+  const summaryData=[
+    ['WalletVN — Monthly Summary', ''],
+    ['Period: February 2026',''],
+    [],
+    ['Metric','Amount (₫)'],
+    ['Total Income', inc],
+    ['Total Expenses', exp],
+    ['Net Savings', Math.max(0,inc-exp)],
+    ['Savings Rate', inc>0?(Math.round((inc-exp)/inc*100)/100):0],
+    ['Total Balance', totalBal()],
+    [],
+    ['By Category','Spent (₫)'],
+    ...budgets.map(b=>[b.name, catSpend(b.name)]),
+  ];
+  const ws4=XLSX.utils.aoa_to_sheet(summaryData);
+  ws4['!cols']=[{wch:22},{wch:18}];
+  ws4['!merges']=[{s:{r:0,c:0},e:{r:0,c:1}}];
+  XLSX.utils.book_append_sheet(wb, ws4, 'Monthly Summary');
+
+  // Download
+  const filename = `WalletVN_Export_${new Date().toISOString().slice(0,10)}.xlsx`;
+  XLSX.writeFile(wb, filename);
+  toast('📥 Excel exported successfully!');
+}
+
+/* ══════════════════ EDIT / DELETE MODAL ══════════════════ */
+let editingTxId = null;
+
+function openEditModal(id) {
+  const t = transactions.find(x => x.id == id);
+  if (!t) return;
+  editingTxId = id;
+
+  $('eTxType').value = t.type;
+  $('eTxAmount').value = t.amount;
+  $('eTxDesc').value = t.desc;
+  $('eTxDate').value = t.date;
+  $('eTxNote').value = t.note || '';
+
+  // Set category
+  const cSel = $('eTxCategory');
+  for (let i = 0; i < cSel.options.length; i++) {
+    if (cSel.options[i].text === t.category) { cSel.selectedIndex = i; break; }
+  }
+
+  // Set account
+  const aSel = $('eTxAccount');
+  let matched = false;
+  for (let i = 0; i < aSel.options.length; i++) {
+    if (aSel.options[i].text === t.account) { aSel.selectedIndex = i; matched = true; break; }
+  }
+  // If account not in list (e.g. custom bank name from SMS), add it temporarily
+  if (!matched) {
+    const opt = document.createElement('option');
+    opt.text = t.account; opt.value = t.account; opt.dataset.temp = '1';
+    aSel.add(opt); aSel.value = t.account;
+  }
+
+  $('editModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEditModal() {
+  $('editModal').classList.remove('open');
+  document.body.style.overflow = '';
+  editingTxId = null;
+  // Remove any temp options
+  const aSel = $('eTxAccount');
+  [...aSel.options].filter(o => o.dataset.temp).forEach(o => o.remove());
+}
+
+function saveEditedTx() {
+  if (!editingTxId) return;
+  const amount = parseInt($('eTxAmount').value);
+  const desc = $('eTxDesc').value.trim();
+  if (!amount || !desc) return toast('⚠️ Amount and description required');
+
+  const idx = transactions.findIndex(x => x.id == editingTxId);
+  if (idx < 0) return;
+
+  transactions[idx] = {
+    ...transactions[idx],
+    type: $('eTxType').value,
+    amount,
+    desc,
+    category: $('eTxCategory').value,
+    account: $('eTxAccount').value,
+    date: $('eTxDate').value,
+    note: $('eTxNote').value,
+  };
+
+  closeEditModal();
+  renderStats(); renderRecent(); renderBudgets();
+  if (currentPage === 'transactions') renderAllTx();
+  toast('✅ Transaction updated!');
+}
+
+function deleteTx(id) {
+  const t = transactions.find(x => x.id == id);
+  if (!t) return;
+  if (!confirm(`Delete "${t.desc}" (${fmt(t.amount)})?`)) return;
+  transactions = transactions.filter(x => x.id != id);
+  renderStats(); renderRecent(); renderBudgets();
+  if (currentPage === 'transactions') renderAllTx();
+  toast('🗑️ Transaction deleted');
+}
+
+function deleteTxFromModal() {
+  if (!editingTxId) return;
+  const t = transactions.find(x => x.id == editingTxId);
+  if (!t) return;
+  if (!confirm(`Delete "${t.desc}" (${fmt(t.amount)})?`)) return;
+  transactions = transactions.filter(x => x.id != editingTxId);
+  closeEditModal();
+  renderStats(); renderRecent(); renderBudgets();
+  if (currentPage === 'transactions') renderAllTx();
+  toast('🗑️ Transaction deleted');
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && $('editModal').classList.contains('open')) closeEditModal();
+});
+
+/* ══════════════════ ANDROID NATIVE BRIDGE ══════════════════ */
+
+// Called by Android when a bank notification is auto-detected
+window.receiveAutoTransaction = function(tx) {
+  try {
+    const t = typeof tx === 'string' ? JSON.parse(tx) : tx;
+    // Ensure unique ID
+    t.id = t.id || Date.now().toString();
+    t.fromNotification = true;
+
+    // Add to transactions array
+    transactions.unshift(t);
+
+    // Refresh UI
+    renderStats();
+    renderRecent();
+    renderBudgets();
+    if (currentPage === 'transactions') renderAllTx();
+
+    // Show in-app toast
+    const sign = t.type === 'income' ? '+' : '-';
+    const emoji = t.type === 'income' ? '💰' : '💸';
+    toast(\`\${emoji} Auto-tracked: \${sign}₫\${fmt(t.amount)} · \${t.desc}\`);
+  } catch(e) {
+    console.error('receiveAutoTransaction error:', e);
+  }
+};
+
+// Called by Android to update service status indicator
+window.setServiceStatus = function(active) {
+  const el = document.getElementById('serviceStatus');
+  if (!el) return;
+  if (active) {
+    el.textContent = '⚡ Auto-tracking ON';
+    el.style.color = 'var(--accent)';
+  } else {
+    el.textContent = '⚠️ Auto-tracking OFF';
+    el.style.color = 'var(--danger, #f43f5e)';
+    el.style.cursor = 'pointer';
+    el.onclick = () => {
+      if (window.AndroidBridge) window.AndroidBridge.requestNotificationAccess();
+    };
+  }
+};
+
+// On load, check if running inside Android WebView
+window.addEventListener('load', () => {
+  if (window.AndroidBridge && window.AndroidBridge.isAndroid()) {
+    // Show service status badge in dashboard
+    const dash = document.getElementById('page-dashboard');
+    if (dash) {
+      const badge = document.createElement('div');
+      badge.id = 'serviceStatus';
+      badge.style.cssText = 'text-align:center;font-size:12px;font-weight:600;padding:6px 0 2px;opacity:.7;';
+      badge.textContent = '⚡ Auto-tracking ON';
+      badge.style.color = 'var(--accent)';
+      dash.insertBefore(badge, dash.firstChild);
+    }
+    // Check actual status
+    const active = window.AndroidBridge.isNotificationAccessGranted();
+    window.setServiceStatus(active);
+  }
+});
+
+/* ══════════════════════ INIT ══════════════════════ */
+document.addEventListener('DOMContentLoaded',()=>{
+  renderStats(); renderRecent(); renderBudgets(); drawChart('week');
+  $('txDate').value = today();
+  // close sidebar on overlay click (mobile)
+  $('sidebar').addEventListener('click', e=>{ if(e.target===$('sidebar')) toggleSidebar(false); });
+});
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(r => console.log('SW registered:', r.scope))
+      .catch(e => console.log('SW failed:', e));
+  });
+}
+</script>
+</body>
+</html>
