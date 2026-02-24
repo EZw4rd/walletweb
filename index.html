@@ -1488,7 +1488,7 @@ window.receiveAutoTransaction = function(tx) {
     // Show in-app toast
     const sign = t.type === 'income' ? '+' : '-';
     const emoji = t.type === 'income' ? '💰' : '💸';
-    toast(\`\${emoji} Auto-tracked: \${sign}₫\${fmt(t.amount)} · \${t.desc}\`);
+    toast(emoji + ' Auto-tracked: ' + sign + '₫' + fmt(t.amount) + ' · ' + t.desc);
   } catch(e) {
     console.error('receiveAutoTransaction error:', e);
   }
